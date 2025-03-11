@@ -10,17 +10,14 @@ typedef struct {
 
 velocity_ball init() {
 
+  srand(time(NULL));
+  
   velocity_ball v_b;
+  float r_or_l = (float) rand() / RAND_MAX;
+  int sign = 1;
 
   v_b.x0 = rand() % 7;
   v_b.y0 = rand() % 7;
-
-  return v_b; 
-}
-
-int init_sign(float r_or_l) {
-
-  int sign = 1;
   
   if (r_or_l > 0.5) {
       sign *= 1;
@@ -28,7 +25,9 @@ int init_sign(float r_or_l) {
       sign *= -1;
     }
   
-  return sign;
+  v_b.x0 *= sign;
+  
+  return v_b; 
 }
 
 int main() {
@@ -42,15 +41,12 @@ int main() {
   SDL_Rect p2 = {570, 350, 20, 80};
   SDL_Rect ball = {320, 240, 10, 10};
 
-  srand(time(NULL));
-
   int velocity_player = 30;
   int velocity_ia = 4;
   
+  // float r_or_l = (float) rand() / RAND_MAX;
+  //  int sign = init_sign(r_or_l);
   velocity_ball v_b = init();
-  float r_or_l = (float) rand() / RAND_MAX;
-  int sign = init_sign(r_or_l);
-  v_b.x0 *= sign;
   
   SDL_Event event;
   int running = 1;
@@ -127,6 +123,30 @@ int main() {
       v_b.x0 *= -1;
     }
 
+    if (ball.x < 0) {
+      printf("Player 2: %i\n", 1);
+
+      velocity_ball v_b = init();
+
+      ball.x = 320;
+      ball.y = 240;
+      
+      ball.x += v_b.x0;
+      ball.y += v_b.y0;
+    }
+
+    if (ball.x > 640) {
+      printf("Player 1: %i\n", 1);
+
+      velocity_ball v_b = init();
+      
+      ball.x = 320;
+      ball.y = 240;
+      
+      ball.x += v_b.x0;
+      ball.y += v_b.y0;
+    }
+    
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
     
