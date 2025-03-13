@@ -9,15 +9,15 @@ typedef struct {
 } velocity_ball;
 
 velocity_ball init() {
-
-  srand(time(NULL));
   
   velocity_ball v_b;
   float r_or_l = (float) rand() / RAND_MAX;
   int sign = 1;
 
-  v_b.x0 = rand() % 7;
-  v_b.y0 = rand() % 7;
+  srand(time(NULL));
+  v_b.x0 = rand() % 6 + 1;
+  srand(time(NULL));
+  v_b.y0 = rand() % 6;
   
   if (r_or_l > 0.5) {
       sign *= 1;
@@ -43,10 +43,11 @@ int main() {
 
   int velocity_player = 30;
   int velocity_ia = 4;
-  
-  // float r_or_l = (float) rand() / RAND_MAX;
-  //  int sign = init_sign(r_or_l);
+
   velocity_ball v_b = init();
+
+  int score_p1 = 0;
+  int score_p2 = 0;
   
   SDL_Event event;
   int running = 1;
@@ -124,24 +125,28 @@ int main() {
     }
 
     if (ball.x < 0) {
-      printf("Player 2: %i\n", 1);
-
-      velocity_ball v_b = init();
+      score_p2++;
+      printf("Player 2: %i\n", score_p2);
 
       ball.x = 320;
-      ball.y = 240;
+      srand(time(NULL));
+      ball.y = rand() % 480;
+
+      velocity_ball v_b = init();
       
       ball.x += v_b.x0;
       ball.y += v_b.y0;
     }
 
     if (ball.x > 640) {
-      printf("Player 1: %i\n", 1);
-
-      velocity_ball v_b = init();
+      score_p1++;
+      printf("Player 1: %i\n", score_p1);
       
       ball.x = 320;
-      ball.y = 240;
+      srand(time(NULL));
+      ball.y = rand() % 480;
+
+      velocity_ball v_b = init();
       
       ball.x += v_b.x0;
       ball.y += v_b.y0;
